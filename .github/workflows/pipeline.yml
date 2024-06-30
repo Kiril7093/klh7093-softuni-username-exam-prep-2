@@ -1,4 +1,3 @@
-
 name: Build and Test
 
 on:
@@ -9,21 +8,40 @@ on:
 
 jobs:
   build_and_test:
-
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout the repo
-      uses: actions/checkout@v4
-    - name: Use Node.js latest 20
-      uses: actions/setup-node@v4
-      with:
-        node-version: 20.x
-        cache: 'npm'
+      - name: Checkout the repo
+        uses: actions/checkout@v4
+      - name: Use Node.js latest 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: 'npm'
 
-    - name: install npm dependencies 
-      run: npm install
-    - name: execute unit tests
-      run: npm run test:unit
-    - name: Display SoftUni username
-      run: echo 'klh7093'
+      - name: install npm dependencies 
+        run: npm install
+      - name: execute unit tests
+        run: npm run test:unit
+      - name: Display SoftUni username
+        run: echo 'klh7093'
+
+  run_ui_tests:
+    needs: build_and_test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v4
+      - name: Use Node.js latest 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: 'npm'
+
+      - name: install npm dependencies 
+        run: npm install
+      - name: Start the app
+        run: npm run start &
+      - name: Execute the UI tests
+        run: npm run test:ui
